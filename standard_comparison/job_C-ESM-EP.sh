@@ -27,7 +27,6 @@ set +x
 date
 
 
-# -- On doit pouvoir le soumettre en batch, ou le soumettre en interactif dans le repertoire de la composante
 # -> # -- On doit pouvoir le soumettre en batch, ou le soumettre en interactif dans le repertoire de la composante
 
 # -> Separer le cas batch et le cas interactif : identifier les deux
@@ -82,14 +81,10 @@ season='ANM'
 # -- Set CliMAF cache (automatically)
 # -------------------------------------------------------- >
 if [[ -d "/ccc" && ! -d "/data" ]]; then
-export CLIMAF_CACHE=${SCRATCHDIR}/climafcache_${component}
-fi
-
-if [[ -d "/data" ]]; then
-export CLIMAF_CACHE=/prodigfs/ipslfs/dods/${USER}/climafcache_${component}
-fi
-
-if [[ -d "/cnrm" ]]; then
+    export CLIMAF_CACHE=${SCRATCHDIR}/climafcache_${component}
+elif [[ -d "/data" && ! -d "/cnrm" ]]; then
+    export CLIMAF_CACHE=/prodigfs/ipslfs/dods/${USER}/climafcache_${component}
+elif [[ -d "/cnrm" ]]; then
     [ -z $CLIMAF_CACHE ] &&  echo "CLIMAF_CACHE should be set by launch job" && exit 1
     export CLIMAF_CACHE
 fi

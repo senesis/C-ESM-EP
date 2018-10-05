@@ -10,7 +10,7 @@ from CM_atlas import *
 from climaf.site_settings import onCiclad, atTGCC, atCNRM
 from getpass import getuser
 from climaf import __path__ as cpath
-import json
+import json, datetime
 import os, copy, subprocess, shlex
 
 
@@ -475,7 +475,7 @@ if do_atlas_explorer:
                              add_product_in_title=add_product_in_title, safe_mode=safe_mode,
                              alternative_dir=alternative_dir, custom_obs_dict=custom_obs_dict,
                              apply_period_manager=apply_period_manager, thumbnail_size=thumbN_size)
-    end = datetime.utcnow()
+    end = datetime.datetime.utcnow()
     duration = end - start
 
 

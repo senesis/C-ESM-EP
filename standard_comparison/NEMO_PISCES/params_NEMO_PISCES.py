@@ -28,10 +28,12 @@
 # -- Preliminary settings: import module, set the verbosity and the 'safe mode'
 # ---------------------------------------------------------------------------- >
 from os import getcwd
+from climaf.site_settings import atCNRM
+
 # -- Set the verbosity of CliMAF (minimum is 'critical', maximum is 'debug', intermediate -> 'warning')
 verbose='debug'
 # -- Safe Mode (set to False and verbose='debug' if you want to debug)
-safe_mode = True
+safe_mode = False
 # -- Set to 'True' (string) to clean the CliMAF cache
 clean_cache = 'False'
 # -- Patterns to clean the cache at the end of the execution of the atlas
@@ -76,15 +78,17 @@ ocebio_2D_variables_list   = ["NO3_surf", "PO4_surf", "Si_surf", "O2_surf",
                               "NO3_1000m", "PO4_1000m", "Si_1000m", "O2_1000m",
                               "NO3_2500m", "PO4_2500m", "Si_2500m", "O2_2500m"]
 ocebio_2D_variables = []
+
+project_specs = dict(
+    CMIP5      = dict(table = 'Omon'),
+    CMIP6      = dict(table = 'Omon', grid='gn'))
+if not atCNRM : 
+    project_specs.update(dict(
+        IGCM_OUT   = dict(DIR   = 'OCE'),
+        IGCM_CMIP6 = dict(table = 'Omon')))
+
 for var in ocebio_2D_variables_list:
-    ocebio_2D_variables.append(dict(variable=var,
-                                       project_specs = dict(
-                                                            CMIP5      = dict(table = 'Omon'),
-                                                            CMIP6      = dict(table = 'Omon', grid='gn'),
-                                                            IGCM_OUT   = dict(DIR   = 'OCE'),
-                                                            IGCM_CMIP6 = dict(table = 'Omon'),
-                                                           )
-                                    ))
+    ocebio_2D_variables.append(dict(variable=var,project_specs=project_specs ))
 
 period_manager_test_variable = 'NO3_surf'
 
