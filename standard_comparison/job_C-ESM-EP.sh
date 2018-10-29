@@ -25,7 +25,7 @@ set +x
 # --
 # -------------------------------------------------------- >
 date
-
+BEGIN=$(date +%s)
 
 # -> # -- On doit pouvoir le soumettre en batch, ou le soumettre en interactif dans le repertoire de la composante
 
@@ -97,4 +97,7 @@ echo python ${main} -p ${param_file} --season ${season} --datasets_setup ${datas
 
 python ${main} -p ${param_file} --season ${season} --datasets_setup ${datasets_setup_file} --comparison ${comparison}
 
-
+date
+END=$(date +%s)
+ELAPSE=$(( 10#$END -  10#$BEGIN ))
+echo ELAPSE=$ELAPSE seconds
