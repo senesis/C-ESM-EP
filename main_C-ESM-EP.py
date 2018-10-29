@@ -11,7 +11,7 @@ from climaf.site_settings import onCiclad, atTGCC, atCNRM
 from getpass import getuser
 from climaf import __path__ as cpath
 import json, datetime
-import os, copy, subprocess, shlex
+import os, os.path, copy, subprocess, shlex
 
 
 # -----------------------------------------------------------------------------------
@@ -210,13 +210,9 @@ for model in models:
 
 
 
-# -- Define the path to the main C-ESM-EP directory:
+# -- Define the path to the main C-ESM-EP directory, i.e. to the current source file:
 # -----------------------------------------------------------------------------------
-rootmainpath = str.split(os.getcwd(),'C-ESM-EP')[0] + 'C-ESM-EP/'
-if os.path.isfile(rootmainpath+'main_C-ESM-EP.py'):
-   main_cesmep_path = rootmainpath
-if os.path.isfile(rootmainpath+str.split(str.split(os.getcwd(),'C-ESM-EP')[1],'/')[1]+'/main_C-ESM-EP.py'):
-   main_cesmep_path = rootmainpath+str.split(str.split(os.getcwd(),'C-ESM-EP')[1],'/')[1]+'/'
+rootmainpath = os.path.dirname(__file__)
 
 
 # -----------------------------------------------------------------------------------
