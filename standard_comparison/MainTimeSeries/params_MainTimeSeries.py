@@ -82,6 +82,20 @@ do_main_time_series        = True    # -> use atlas_explorer_variables to set yo
 def annual_mean_space_average(dat):
     return space_average(ccdo(dat,operator='yearmean'))
 
+def annual_mean(dat):
+    return ccdo(dat,operator='yearmean')
+
+def ACC(dat):
+    return ccdo(fdiv(slice(dat, dim='line', min=5, max=5), 1023*1e6),operator='yearmean')
+
+def AMOC_26(dat):
+    return ccdo(ccdo(slice(slice(dat, dim='j-mean', min=191,max=191), dim='basin', min=2,max=2),operator='vertmax'),operator='yearmean')
+
+def AMOC_45(dat):
+    return ccdo(ccdo(slice(slice(dat, dim='j-mean', min=215,max=215), dim='basin', min=2,max=2),operator='vertmax'),operator='yearmean')
+
+
+
 def annual_seaice_volume(dat, **kwargs):
     domain=dict(lonmin=0,lonmax=360,latmin=50,latmax=90)
     if 'grid_file' in kwargs:
@@ -118,8 +132,6 @@ time_series_specs = [
          text_fontsize=15,
     ),
 
-
-
     dict(variable='tas',
          project_specs = dict(
                               CMIP5    = dict(table='Amon'),
@@ -132,6 +144,38 @@ time_series_specs = [
          ylabel='Temperature (degC)', xlabel='Time (years)',
     ),
 
+    dict(variable='mfo',
+         project_specs = dict(
+                              CMIP5    = dict(table='Omon',grid="gn",gr="gn"),
+                              CMIP6    = dict(table='Omon',grid="gn",gr="gn"),
+                              IGCM_OUT = dict(DIR='OCE',grid="gn",gr="gn"),
+                             ),
+         operation=ACC,
+         left_string='Drake transport',
+         ylabel='Sv', xlabel='Time (years)',
+    ),
+
+    dict(variable='msftyz',
+         project_specs = dict(
+                              CMIP5    = dict(table='Omon',grid="gn",gr="gn"),
+                              CMIP6    = dict(table='Omon',grid="gn",gr="gn"),
+                              IGCM_OUT = dict(DIR='OCE',grid="gn",gr="gn"),
+                             ),
+         operation=AMOC_26,
+         left_string='AMOC 26N',
+         ylabel='Sv', xlabel='Time (years)',
+    ),
+
+    dict(variable='msftyz',
+         project_specs = dict(
+                              CMIP5    = dict(table='Omon',grid="gn",gr="gn"),
+                              CMIP6    = dict(table='Omon',grid="gn",gr="gn"),
+                              IGCM_OUT = dict(DIR='OCE',grid="gn",gr="gn"),
+                             ),
+         operation=AMOC_45,
+         left_string='AMOC 45N',
+         ylabel='Sv', xlabel='Time (years)',
+    ),
     #dict(variable='sicsit',
     #     operation=annual_seaice_volume,
     #     operation_kwargs = dict(grid_file='/data/igcmg/database/grids/eORCA1.2_grid.nc'),
