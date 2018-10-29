@@ -28,27 +28,30 @@ def section_zonalmean_slices(models=[],reference='default',zonmean_slices_variab
                    index+=start_line(title_region(basin)+' '+varlongname(variable)+' ('+variable+')')
                 if reference=='default':
                    ref = variable2reference(variable, my_obs=custom_obs_dict)
+                   if ref is None :
+                       print "Cannot find a reference for variable %s"%variable
                 else:
                    ref = reference.copy()
-                basin_zonmean_modelgrid = zonal_mean_slice(ref, variable, basin=basin, season=season,
+                if ref :
+                    basin_zonmean_modelgrid = zonal_mean_slice(ref, variable, basin=basin, season=season,
                                                 ref=None, safe_mode=safe_mode, do_cfile=do_cfile, y=y, add_product_in_title=None,
                                                 custom_plot_params=custom_plot_params, method='regrid_model_on_ref',
                                                 apply_period_manager=apply_period_manager)
-                if not do_cfile:
-                   plots_crs.append(basin_zonmean_modelgrid)
-                else:
-                   index+=cell("", basin_zonmean_modelgrid, thumbnail=thumbsize_zonalmean, hover=hover, **alternative_dir)
-                for model in models:
-                    basin_zonmean_modelgrid = zonal_mean_slice(model, variable, basin=basin, season=season,
+                    if not do_cfile:
+                        plots_crs.append(basin_zonmean_modelgrid)
+                    else:
+                        index+=cell("", basin_zonmean_modelgrid, thumbnail=thumbsize_zonalmean, hover=hover, **alternative_dir)
+                    for model in models:
+                        basin_zonmean_modelgrid = zonal_mean_slice(model, variable, basin=basin, season=season,
                                                 ref=ref, safe_mode=safe_mode, do_cfile=do_cfile, y=y, add_product_in_title=None,
                                                 custom_plot_params=custom_plot_params, method='regrid_model_on_ref',
                                                 apply_period_manager=apply_period_manager)
-                    if not do_cfile:
-                       plots_crs.append(basin_zonmean_modelgrid)
-                    else:
-                       index+=cell("", basin_zonmean_modelgrid, thumbnail=thumbsize_zonalmean, hover=hover, **alternative_dir)
-                if do_cfile:
-                   index+=close_line()+close_table()
+                        if not do_cfile:
+                            plots_crs.append(basin_zonmean_modelgrid)
+                        else:
+                            index+=cell("", basin_zonmean_modelgrid, thumbnail=thumbsize_zonalmean, hover=hover, **alternative_dir)
+                    if do_cfile:
+                        index+=close_line()+close_table()
 
     #
     if do_cfile:
