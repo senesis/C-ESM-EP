@@ -29,6 +29,7 @@
 # -- Preliminary settings: import module, set the verbosity and the 'safe mode'
 # ---------------------------------------------------------------------------- >
 from os import getcwd
+from climaf.site_settings import atCNRM
 # -- Set the verbosity of CliMAF (minimum is 'critical', maximum is 'debug', intermediate -> 'warning')
 verbose='debug'
 # -- Safe Mode (set to False and verbose='debug' if you want to debug)
@@ -81,10 +82,15 @@ domain = {}
 # -- Zonal Mean slices
 do_ATLAS_ZONALMEAN_SLICES = True
 zonmean_slices_seas      = ["ANN"]#,"MAM","JJA","SON"]
-zonmean_slices_variables = ["thetao","so"]
+if atCNRM:
+    period_manager_test_variable = 'bigthetao'
+    zonmean_slices_variables = ["bigthetao","so"]
+else:
+    period_manager_test_variable = 'thetao'
+    zonmean_slices_variables = ["thetao","so"]
+    
 zonmean_slices_basins    = ["GLO","ATL","PAC","IND"]
 y = 'lin' # -> The vertical axis; choose between 'lin' (linear) or 'index' (model index levels)
-period_manager_test_variable = 'thetao'
 
 # ---------------------------------------------------------------------------- >
 
