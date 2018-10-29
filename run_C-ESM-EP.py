@@ -106,8 +106,9 @@ metrics_components = ['ParallelCoordinates_Atmosphere','Seasonal_one_variable_pa
 
 # -- Get the arguments passed to the script
 # --> If we do not specify the component(s), run all available components
-if len(args)==1:
-   print 'Provide the name of a comparison setup as argument of the script'
+if len(args)==1 or not os.path.exists(args[1]) :
+   print 'Provide the name of an existing comparison subdir as argument of the script'
+   sys.exit()
 else:
    comparison=str.replace(args[1],'/','')
    argument='None'
@@ -314,6 +315,7 @@ for component in job_components:
     # -- We execute the params_${component}.py file to get the do_parallel variable if set to True
     do_parallel=False
     nprocs = '32'
+    if atCNRM : nprocs='4' # For memory constraint (only 4Go per proc if using all 16 or 20 procs)
     memory = None
     queue = None
     param_filename = open(submitdir+'/params_'+component+'.py')
@@ -418,7 +420,7 @@ for component in job_components:
              \
              ' \tjobId=$(cat jobname.tmp | cut -d \" \" -f 4 jobname.tmp); rm jobname.tmp  ; \n'+\
              \
-             '\techo -n Job submitted : $jobId\n\n'+\
+             '\techo  Job submitted : $jobId\n\n'+\
              \
              ' \tsqsub -b \"-d afternotok:$jobID\" '+\
              '-e \"atlas_pathfilename='+atlas_pathfilename+','+variables+'\"'+\
