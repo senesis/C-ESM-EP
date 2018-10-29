@@ -27,10 +27,11 @@
 # -- Preliminary settings: import module, set the verbosity and the 'safe mode'
 # ---------------------------------------------------------------------------- >
 from os import getcwd
+from climaf.site_settings import atCNRM
 # -- Set the verbosity of CliMAF (minimum is 'critical', maximum is 'debug', intermediate -> 'warning')
 verbose='debug'
 # -- Safe Mode (set to False and verbose='debug' if you want to debug)
-safe_mode = True
+safe_mode = False
 # -- Set to 'True' (string) to clean the CliMAF cache
 clean_cache = 'False'
 # -- routine_cache_cleaning is a dictionary or list of dictionaries provided
@@ -79,7 +80,14 @@ domain = {}
 # -- 2D Maps
 do_ocean_2D_maps       = True    # -> [NEMO Atlas] builds a section with a list of standard oceanic variables (2D maps only)
 ocean_2D_variables = []
-for var in ['to200', 'to1000', 'so200', 'so1000']:
+varlist=['to200', 'to1000', 'so200', 'so1000']
+if atCNRM :
+    derive('*','bto200','ccdo','bigthetao',operator='intlevel,200')
+    derive('*','bto1000','ccdo','bigthetao',operator='intlevel,1000')
+    derive('*','bto2000','ccdo','bigthetao',operator='intlevel,2000')
+    varlist=['bto200', 'bto1000', 'so200', 'so1000']
+    
+for var in varlist :
     ocean_2D_variables.append (dict(variable=var, season='ANM',
                                     project_specs = dict(
                                                          CMIP5      = dict(table = 'Omon'),
